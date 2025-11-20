@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (toggleBtn && sidebar) {
         toggleBtn.addEventListener('click', () => {
-            // Detecta se está em mobile (até 768px)
+            // detecta se está em modo mobile (até 768px)
             const isMobile = window.matchMedia('(max-width: 768px)').matches;
             const overlayId = 'sidebar-overlay';
 
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.body.appendChild(overlay);
                     }
                 } else {
-                    // Fecha menu e remove overlay
+                    // fecha menu e remove overlay
                     sidebar.classList.add('-translate-x-full');
                     document.getElementById(overlayId)?.remove();
                 }
@@ -97,11 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault(); // Previne navegação para o link pai
 
             const navItem = this.closest('.nav-item');
-
-            // Alterna a classe 'expanded' no item pai
             navItem.classList.toggle('expanded');
-
-            // Nota: a animação do submenu é controlada pelo CSS (max-height)
         });
     });
 
@@ -113,77 +109,123 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCharts();
     }
 
-    function renderCharts() {
-        // Cores baseadas na variável CSS (precisam ser definidas aqui para o Chart.js)
-        const primaryColor = '#2692f0';
-        const secondaryColor = '#f39c12';
-        const successColor = '#2ecc71';
 
-        // Gráfico de Linhas: Leads de Clientes
-        new Chart(document.getElementById('leadsChart'), {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
-                datasets: [{
-                    label: 'Novos Leads',
-                    data: [120, 150, 90, 210, 180, 300, 250],
-                    borderColor: primaryColor,
-                    backgroundColor: 'rgba(38, 146, 240, 0.1)',
-                    tension: 0.3,
-                    fill: true,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true }
+ function renderCharts() {
+    // paleta de cores mais acessível
+    const colors = {
+        primary: '#3b82f6',     // Azul
+        secondary: '#10b981',   // Verde
+        accent: '#8b5cf6',      // Roxo
+        warning: '#f59e0b',     // Âmbar
+        danger: '#ef4444',      // Vermelho
+        info: '#06b6d4',        // Ciano
+        gray: '#6b7280'         // Cinza
+    };
+
+    // Cores para modo escuro
+    const darkColors = {
+        primary: '#60a5fa',
+        secondary: '#34d399',
+        accent: '#a78bfa',
+        warning: '#fbbf24',
+        danger: '#f87171',
+        info: '#22d3ee',
+        gray: '#9ca3af'
+    };
+
+    // Detecta modo escuro
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    const currentColors = isDarkMode ? darkColors : colors;
+    const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+    const textColor = isDarkMode ? '#d1d5db' : '#4b5563';
+
+    // Gráfico de Linhas
+    new Chart(document.getElementById('leadsChart'), {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+            datasets: [{
+                label: 'Novos Leads',
+                data: [20, 150, 90, 110, 190, 30, 250],
+                borderColor: currentColors.primary,
+                backgroundColor: isDarkMode 
+                    ? 'rgba(96, 165, 250, 0.1)' 
+                    : 'rgba(59, 130, 246, 0.1)',
+                tension: 0.3,
+                fill: true,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { 
+                    beginAtZero: true,
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
+                },
+                x: {
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
                 }
             }
-        });
+        }
+    });
 
-        // Gráfico de Pizza: Leads por Fonte
-        new Chart(document.getElementById('sourceChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Orgânico', 'Pago', 'Referência', 'Direto'],
-                datasets: [{
-                    data: [40, 30, 20, 10],
-                    backgroundColor: [
-                        primaryColor,
-                        secondaryColor,
-                        successColor,
-                        '#9b59b6'
-                    ],
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-            }
-        });
+    // Gráfico de Pizza
+    new Chart(document.getElementById('sourceChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Orgânico', 'Pago', 'Referência', 'Direto'],
+            datasets: [{
+                data: [40, 30, 20, 10],
+                backgroundColor: [
+                    currentColors.primary,
+                    currentColors.secondary,
+                    currentColors.accent,
+                    currentColors.warning
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
 
-        // Gráfico de Barras: Taxa de Conversão Mensal
-        new Chart(document.getElementById('conversionChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
-                datasets: [{
-                    label: 'Taxa de Conversão (%)',
-                    data: [2.5, 3.1, 1.8, 4.0, 3.5, 5.2, 4.5],
-                    backgroundColor: 'rgba(38, 146, 240, 0.7)',
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, max: 10 }
+    // Gráfico de Barras
+    new Chart(document.getElementById('conversionChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+            datasets: [{
+                label: 'Taxa de Conversão (%)',
+                data: [2.5, 3.1, 1.8, 4.0, 3.5, 5.2, 4.5],
+                backgroundColor: currentColors.primary,
+                borderColor: currentColors.primary,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { 
+                    beginAtZero: true, 
+                    max: 10,
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
+                },
+                x: {
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
                 }
             }
-        });
+        }
+    });
+}
 
-    }
 
     // ===============================================
     // 4. Lógica de Cadastro de Contato (contatos.html)

@@ -5,24 +5,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gráficos - Dashboard de Leads</title>
-    <!-- CSS gerado pelo Tailwind -->
+    <!-- CSS gerado pelo Tailwind no terminal -->
     <link rel="stylesheet" href="dist/styles.css" />
-    <!-- Ícones -->
+    <!-- Ícones base -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body class="bg-gray-100 dark:bg-[#a3b3ff]">
     <!-- Container geral: display flex, altura mínima e cores com dark mode -->
     <div class="flex min-h-screen bg-gray-100 dark:bg-gray-900">
         <!-- Sidebar: fixa no mobile como drawer, estática no desktop -->
         <aside id="sidebar"
-            class="bg-white dark:bg-gray-900 fixed inset-y-0 left-0 w-64 -translate-x-full md:translate-x-0 md:static md:flex min-h-screen border-r border-gray-200 dark:border-gray-700 flex-col transition-transform duration-300 z-40">
+            class="bg-white dark:bg-sidebar fixed inset-y-0 left-0 w-64 -translate-x-full md:translate-x-0 md:static md:flex min-h-screen border-r border-gray-200 dark:border-gray-700 flex-col transition-transform duration-300 z-40">
             <div class="px-4 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">App Logo</h2>
             </div>
-
             <nav class="mt-2">
                 <ul class="space-y-1">
                     <li>
@@ -42,7 +41,7 @@
                         </a>
                     </li>
 
-                    <!-- Dropdown Contatos (estrutura base; JS já cuida do toggle) -->
+                    <!-- Dropdown Contatos (estrutura base; JS esta cuidando do toggle) -->
                     <li class="nav-item">
                         <a href="contatos.html"
                             class="flex items-center justify-between px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition dropdown-toggle">
@@ -102,51 +101,53 @@
         </aside>
 
         <!-- Conteúdo principal -->
-        <main class="flex-1">
+        <main class="flex-1 min-w-0">
             <!-- Header -->
             <header
                 class="flex items-center justify-between bg-white dark:bg-gray-900 p-4 border-b border-gray-200 dark:border-gray-700 shadow">
                 <div class="flex items-center gap-3">
                     <!-- Botão para abrir/fechar sidebar no mobile -->
                     <button id="toggle-sidebar-btn"
-                        class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                        class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition block md:hidden">
                         <i class="fas fa-bars text-gray-800 dark:text-white"></i>
                     </button>
 
-                    <!-- Botão de tema -->
-                    <button id="theme-toggle-btn"
-                        class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                        <span class="sr-only">Alternar tema</span>
-                        <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
-                        <i class="fas fa-moon text-gray-200 hidden dark:inline"></i>
-                    </button>
+                    <!-- Título da página corrigido -->
+                    <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Dashboard de Gráficos</h1>
+                </div>
+
+                <!-- Botão de tema -->
+                <button id="theme-toggle-btn"
+                    class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                    <span class="sr-only">Alternar tema</span>
+                    <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+                    <i class="fas fa-moon text-gray-200 hidden dark:inline"></i>
+                </button>
             </header>
 
-            <!-- Área de conteúdo com espaçamento responsivo -->
-            <div class="p-4 sm:p-6 space-y-4">
-                <!-- Card 1 -->
-                <section class="rounded-xl bg-white dark:bg-gray-900 shadow p-4">
-                    <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Visão Geral dos Leads</h2>
-                    <div class="relative w-full h-64 sm:h-72 lg:h-80 overflow-x-auto">
-                        <canvas id="leadsChart" class="w-full h-full"></canvas>
+            <!-- Área de conteúdo responsivo -->
+            <div class="p-4 sm:p-6 space-y-4 w-full min-w-0">
+                <!-- Card 1 - Gráfico principal -->
+                <section class="rounded-xl bg-white dark:bg-card shadow p-4 w-full">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Visão Geral dos Leads</h2>
+                    <div class="chart-container">
+                        <canvas id="leadsChart"></canvas>
                     </div>
-
                 </section>
 
                 <!-- Cards lado a lado no md+ -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <section class="rounded-xl bg-white dark:bg-gray-900 shadow p-4">
-                        <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Leads por Fonte</h2>
-                        <div class="h-64 sm:h-72">
-                            <canvas id="sourceChart" class="w-full h-full"></canvas>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full min-w-0">
+                    <section class="rounded-xl bg-white dark:bg-card shadow p-4 w-full">
+                        <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Leads por Fonte</h2>
+                        <div class="chart-container">
+                            <canvas id="sourceChart"></canvas>
                         </div>
                     </section>
 
-                    <section class="rounded-xl bg-white dark:bg-gray-900 shadow p-4">
-                        <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Taxa de Conversão Mensal
-                        </h2>
-                        <div class="h-64 sm:h-72">
-                            <canvas id="conversionChart" class="w-full h-full"></canvas>
+                    <section class="rounded-xl bg-white dark:bg-card shadow p-4 w-full">
+                        <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Taxa de Conversão Mensal</h2>
+                        <div class="chart-container">
+                            <canvas id="conversionChart"></canvas>
                         </div>
                     </section>
                 </div>
@@ -154,7 +155,7 @@
         </main>
     </div>
 
-    <!-- Seu JS com dark mode ajustado para usar a classe 'dark' -->
+    <!-- JS externo -->
     <script src="js/script.js"></script>
 </body>
 

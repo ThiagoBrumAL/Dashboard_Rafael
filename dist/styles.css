@@ -554,6 +554,10 @@ video {
   display: none;
 }
 
+/* =============================================== */
+/* UTILITÁRIOS TAILWIND - MANTIDOS DO SEU CSS ORIGINAL */
+/* =============================================== */
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -870,6 +874,10 @@ video {
   color: rgb(38 146 240 / var(--tw-text-opacity, 1));
 }
 
+/* =============================================== */
+/* DARK MODE STYLES - MANTIDOS DO SEU CSS ORIGINAL */
+/* =============================================== */
+
 .dark\:inline:is(.dark *) {
   display: inline;
 }
@@ -885,7 +893,7 @@ video {
 
 .dark\:bg-gray-900:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
+  background-color: rgb(49 46 129 / var(--tw-bg-opacity)); /* indigo-900 */
 }
 
 .dark\:bg-blue-500\/10:is(.dark *) {
@@ -921,6 +929,31 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
 }
+
+/* =============================================== */
+/* CUSTOM DARK MODE COLORS - SEUS ESTILOS PERSONALIZADOS */
+/* =============================================== */
+
+.dark\:bg-card:is(.dark *) {
+  background-color: rgb(34 33 74); /* azul/neutro escuro para cards */
+}
+
+.dark\:bg-sidebar:is(.dark *) {
+  background-color: rgb(35 35 76); /* sidebar um pouco diferente */
+}
+
+/* =============================================== */
+/* ESTILOS PARA CANVAS - MANTIDOS DO SEU CSS */
+/* =============================================== */
+
+canvas { 
+  max-width: 100vw; 
+  box-sizing: border-box; 
+}
+
+/* =============================================== */
+/* MEDIA QUERIES RESPONSIVAS - MANTIDAS DO SEU CSS */
+/* =============================================== */
 
 @media (min-width: 640px) {
   .sm\:h-72 {
@@ -964,4 +997,42 @@ video {
   .lg\:h-80 {
     height: 20rem;
   }
+}
+
+/* =============================================== */
+/* NOVOS ESTILOS ADICIONADOS PARA RESPONSIVIDADE */
+/* =============================================== */
+
+/* Containers responsivos para gráficos */
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+}
+
+@media (min-width: 640px) {
+  .chart-container {
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chart-container {
+    min-height: 350px;
+  }
+}
+
+/* Melhorias para dropdowns responsivos */
+.nav-item.expanded .dropdown-menu {
+  max-height: 200px;
+}
+
+/* Overlay para sidebar mobile com transição suave */
+.sidebar-mobile-overlay {
+  transition: opacity 0.3s ease;
+}
+
+/* Garantir que elementos tenham largura mínima zero para evitar overflow */
+.min-w-0 {
+  min-width: 0;
 }
